@@ -71,7 +71,7 @@ def get_sub_cats():
 						si = i.index(sc)+9
 						ei = i.index(ec)
 						r=i[si:ei]
-						exclude = ['https://www.ikea.com/ae/en/cat/products-products', 'https://www.ikea.com/ae/en/cat/furniture-fu001']
+						exclude = ['https://www.ikea.com/ae/en/cat/products-products']
 						if ((r in exclude) or (len(r) < 5)):
 							pass
 						else:
