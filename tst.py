@@ -1,6 +1,7 @@
 import urllib.request
 from time import sleep
 import pickle
+import io
 
 def read_pickle_file(fn):
 	try:
@@ -19,16 +20,14 @@ def write_pickle_file(fn):
 
 def write_file(val, file_name='replay.html'):
 	try:
-		with open(file_name, 'w') as the_file:
-			the_file.write(val)
+		with io.open(file_name, "w", encoding="utf-8") as f:
+			f.write(val)
 			print(file_name + ' exported')
 	except:
 		print("Couldn't export data :'(")
 
-main_cats = read_pickle_file('main_cats.pickle')
-cats = read_pickle_file('cats.pickle')
 
-def get_cats():
+def extract_cats():
 	for idx,url in enumerate(main_cats):
 		f = urllib.request.urlopen(url)
 		rep = str(f.read().decode("utf-8"))
@@ -54,7 +53,7 @@ def get_cats():
 		sleep(5)
 	return(cats)
 
-def get_sub_cats():
+def extract_sub_cats():
 	try:
 		sub_cats = []
 		for idx,url in enumerate(cats):
@@ -87,4 +86,26 @@ def get_sub_cats():
 	except:
 		pass
 
-write_file(str(get_sub_cats()))
+
+main_cats = read_pickle_file('main_cats.pickle')
+cats = read_pickle_file('cats.pickle')
+sub_cats = read_pickle_file('sub_cats.pickle')
+products = {}
+
+def get_no_of_pages(url):
+	f = urllib.request.urlopen(url)
+	rep = str(f.read().decode("utf-8"))
+	print(rep)
+	write_file(rep)
+	print(type(rep))
+
+def extract_products():
+	for idx,val in enumerate(sub_cats[0:1]):
+		print(val)
+		# get_no_of_pages(val)
+
+# extract_products()
+url = 'https://www.ikea.com/ae/en/cat/paper-media-boxes-16202/'
+f = urllib.request.urlopen(url)
+rep = str(f.read().decode("utf-8"))
+write_file(rep)
