@@ -1,0 +1,2 @@
+- stock availability tracker
+- daily # of views tracker

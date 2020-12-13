@@ -1,5 +1,21 @@
 import urllib.request
 from time import sleep
+import pickle
+
+def read_pickle_file(fn):
+	try:
+		with open(fn, 'rb') as handle:
+			f = pickle.load(handle)
+		return f
+	except:
+		print(f"Couldn't read {fn}")
+
+def write_pickle_file(fn):
+	try:
+		with open(fn, 'wb') as handle:
+			pickle.dump(fn, handle, protocol=pickle.HIGHEST_PROTOCOL)
+	except:
+		print(f"Couldn't write {fn}")
 
 def write_file(val, file_name='replay.html'):
 	try:
@@ -9,8 +25,8 @@ def write_file(val, file_name='replay.html'):
 	except:
 		print("Couldn't export data :'(")
 
-main_cats = ['https://www.ikea.com/ae/en/cat/furniture-fu001/', 'https://www.ikea.com/ae/en/cat/storage-organisation-st001/', 'https://www.ikea.com/ae/en/cat/beds-mattresses-bm001/', 'https://www.ikea.com/ae/en/cat/kitchen-appliances-ka001/', 'https://www.ikea.com/ae/en/cat/bathroom-products-ba001/', 'https://www.ikea.com/ae/en/cat/baby-children-bc001/', 'https://www.ikea.com/ae/en/cat/decoration-de001/', 'https://www.ikea.com/ae/en/cat/kitchenware-tableware-kt001/', 'https://www.ikea.com/ae/en/cat/textiles-tl001/', 'https://www.ikea.com/ae/en/cat/rugs-mats-flooring-rm001/', 'https://www.ikea.com/ae/en/cat/lighting-li001/', 'https://www.ikea.com/ae/en/cat/home-smart-hs001/', 'https://www.ikea.com/ae/en/cat/home-electronics-he001/', 'https://www.ikea.com/ae/en/cat/outdoor-products-od001/', 'https://www.ikea.com/ae/en/cat/pots-plants-pp001/', 'https://www.ikea.com/ae/en/cat/laundry-cleaning-lc001/', 'https://www.ikea.com/ae/en/cat/home-improvement-hi001/', 'https://www.ikea.com/ae/en/cat/safety-products-sp001/', 'https://www.ikea.com/ae/en/cat/leisure-travel-lt001/', 'https://www.ikea.com/ae/en/cat/summer-ss001/', 'https://www.ikea.com/ae/en/cat/winter-collections-wt001/']
-cats = ['https://www.ikea.com/ae/en/cat/furniture-fu001', 'https://www.ikea.com/ae/en/cat/armchairs-chaise-longues-fu006', 'https://www.ikea.com/ae/en/cat/sofas-armchairs-fu003', 'https://www.ikea.com/ae/en/cat/wardrobes-19053', 'https://www.ikea.com/ae/en/cat/bookcases-shelving-units-st002', 'https://www.ikea.com/ae/en/cat/tv-media-furniture-10475', 'https://www.ikea.com/ae/en/cat/chests-of-drawers-drawer-units-st004', 'https://www.ikea.com/ae/en/cat/sideboards-buffets-console-tables-30454', 'https://www.ikea.com/ae/en/cat/cabinets-cupboards-st003', 'https://www.ikea.com/ae/en/cat/beds-bm003', 'https://www.ikea.com/ae/en/cat/tables-desks-fu004', 'https://www.ikea.com/ae/en/cat/bar-furniture-16244', 'https://www.ikea.com/ae/en/cat/cafe-furniture-19141', 'https://www.ikea.com/ae/en/cat/chairs-fu002', 'https://www.ikea.com/ae/en/cat/outdoor-furniture-od003', 'https://www.ikea.com/ae/en/cat/childrens-furniture-18767', 'https://www.ikea.com/ae/en/cat/trolleys-fu005', 'https://www.ikea.com/ae/en/cat/room-dividers-46080', 'https://www.ikea.com/ae/en/cat/nursery-furniture-45780', 'https://www.ikea.com/ae/en/cat/storage-organisation-st001', 'https://www.ikea.com/ae/en/cat/storage-solution-systems-46052', 'https://www.ikea.com/ae/en/cat/wardrobes-19053', 'https://www.ikea.com/ae/en/cat/chests-of-drawers-drawer-units-st004', 'https://www.ikea.com/ae/en/cat/bookcases-shelving-units-st002', 'https://www.ikea.com/ae/en/cat/cabinets-cupboards-st003', 'https://www.ikea.com/ae/en/cat/tv-media-furniture-10475', 'https://www.ikea.com/ae/en/cat/sideboards-buffets-console-tables-30454', 'https://www.ikea.com/ae/en/cat/clothes-stands-shoe-racks-st005', 'https://www.ikea.com/ae/en/cat/hooks-wall-organisation-st006', 'https://www.ikea.com/ae/en/cat/small-storage-organisers-st007', 'https://www.ikea.com/ae/en/cat/trolleys-fu005', 'https://www.ikea.com/ae/en/cat/bags-16248', 'https://www.ikea.com/ae/en/cat/moving-supplies-46078', 'https://www.ikea.com/ae/en/cat/wardrobes-19053', 'https://www.ikea.com/ae/en/cat/stuva-system-18836', 'https://www.ikea.com/ae/en/cat/beds-mattresses-bm001', 'https://www.ikea.com/ae/en/cat/beds-bm003', 'https://www.ikea.com/ae/en/cat/mattresses-bm002', 'https://www.ikea.com/ae/en/cat/headboards-19064', 'https://www.ikea.com/ae/en/cat/bedside-tables-20656', 'https://www.ikea.com/ae/en/cat/mattress-bases-24825', 'https://www.ikea.com/ae/en/cat/bed-slats-24827', 'https://www.ikea.com/ae/en/cat/under-bed-storage-19059', 'https://www.ikea.com/ae/en/cat/bedding-tl004', 'https://www.ikea.com/ae/en/cat/bed-legs-24822', 'https://www.ikea.com/ae/en/cat/single-beds-16285', 'https://www.ikea.com/addon-app/completesleep/configurator/m2/latest/ae/en', 'https://www.ikea.com/addon-app/completesleep/needmap/m2/latest/ae/en', 'https://www.ikea.com/ae/en/cat/kitchen-appliances-ka001', 'https://www.ikea.com/ae/en/cat/kitchens-ka003', 'https://www.ikea.com/ae/en/cat/metod-kitchen-cabinets-fronts-24254', 'https://www.ikea.com/ae/en/cat/interior-fittings-24255', 'https://www.ikea.com/ae/en/cat/appliances-ka002', 'https://www.ikea.com/ae/en/cat/kitchen-worktops-24264', 'https://www.ikea.com/ae/en/cat/kitchen-taps-sinks-24261', 'https://www.ikea.com/ae/en/cat/unit-kitchens-22957', 'https://www.ikea.com/ae/en/cat/kitchen-islands-trolleys-10471', 'https://www.ikea.com/ae/en/cat/knobs-handles-16298', 'https://www.ikea.com/ae/en/cat/splashbacks-wall-panels-19121', 'https://www.ikea.com/ae/en/cat/kitchen-wall-storage-20676', 'https://www.ikea.com/ae/en/cat/kitchen-lighting-16282', 'https://www.ikea.com/ae/en/cat/pantry-16200', 'https://www.ikea.com/ae/en/cat/bathroom-products-ba001', 'https://www.ikea.com/ae/en/cat/bathroom-laundry-ba003', 'https://www.ikea.com/ae/en/cat/bathroom-storage-ba002', 'https://www.ikea.com/ae/en/cat/bathroom-cabinets-20802', 'https://www.ikea.com/ae/en/cat/bathroom-sinks-20723', 'https://www.ikea.com/ae/en/cat/bathroom-vanities-20719', 'https://www.ikea.com/ae/en/cat/bathroom-furniture-sets-46079', 'https://www.ikea.com/ae/en/cat/bathroom-taps-20724', 'https://www.ikea.com/ae/en/cat/showers-40690', 'https://www.ikea.com/ae/en/cat/bathroom-stools-benches-20859', 'https://www.ikea.com/ae/en/cat/bathroom-mirrors-20490', 'https://www.ikea.com/ae/en/cat/bathroom-lighting-10736', 'https://www.ikea.com/ae/en/cat/bathroom-accessories-10555', 'https://www.ikea.com/ae/en/cat/bath-textiles-tl003', 'https://www.ikea.com/ae/en/cat/bath-textiles-tl003', 'https://www.ikea.com/ae/en/cat/baby-children-bc001', 'https://www.ikea.com/ae/en/cat/baby-bc002', 'https://www.ikea.com/ae/en/cat/children-3-7-bc003', 'https://www.ikea.com/ae/en/cat/stuva-system-18836', 'https://www.ikea.com/ae/en/cat/decoration-de001', 'https://www.ikea.com/ae/en/cat/candle-holders-candles-10760', 'https://www.ikea.com/ae/en/cat/frames-pictures-10757', 'https://www.ikea.com/ae/en/cat/plants-flowers-pp003', 'https://www.ikea.com/ae/en/cat/flower-pots-planters-pp004', 'https://www.ikea.com/ae/en/cat/vases-bowls-10769', 'https://www.ikea.com/ae/en/cat/home-fragrance-42926', 'https://www.ikea.com/ae/en/cat/paper-shop-25227', 'https://www.ikea.com/ae/en/cat/decorative-accessories-24924', 'https://www.ikea.com/ae/en/cat/clocks-10759', 'https://www.ikea.com/ae/en/cat/mirrors-20489', 'https://www.ikea.com/ae/en/cat/holiday-decoration-16309', 'https://www.ikea.com/ae/en/cat/storage-boxes-baskets-10550', 'https://www.ikea.com/ae/en/cat/noticeboards-10574', 'https://www.ikea.com/ae/en/cat/kitchenware-tableware-kt001', 'https://www.ikea.com/ae/en/cat/bakeware-20636', 'https://www.ikea.com/ae/en/cat/cookware-kt003', 'https://www.ikea.com/ae/en/cat/cooking-baking-utensils-kt002', 'https://www.ikea.com/ae/en/cat/knives-chopping-boards-15934', 'https://www.ikea.com/ae/en/cat/dinnerware-18860', 'https://www.ikea.com/ae/en/cat/cutlery-18865', 'https://www.ikea.com/ae/en/cat/glassware-jugs-18868', 'https://www.ikea.com/ae/en/cat/serveware-16043', 'https://www.ikea.com/ae/en/cat/childrens-kitchenware-tableware-18714', 'https://www.ikea.com/ae/en/cat/coffee-tea-16044', 'https://www.ikea.com/ae/en/cat/table-linen-20538', 'https://www.ikea.com/ae/en/cat/kitchen-textiles-18850', 'https://www.ikea.com/ae/en/cat/food-storage-organising-15937', 'https://www.ikea.com/ae/en/cat/napkins-napkin-holders-20560', 'https://www.ikea.com/ae/en/cat/dishwashing-accessories-15938', 'https://www.ikea.com/ae/en/cat/cookware-kt003', 'https://www.ikea.com/ae/en/cat/svalka-series-14889', 'https://www.ikea.com/ae/en/cat/textiles-tl001', 'https://www.ikea.com/ae/en/cat/bedding-tl004', 'https://www.ikea.com/ae/en/cat/cushions-cushion-covers-10659', 'https://www.ikea.com/ae/en/cat/bath-textiles-tl003', 'https://www.ikea.com/ae/en/cat/curtains-blinds-tl002', 'https://www.ikea.com/ae/en/cat/fabrics-sewing-10655', 'https://www.ikea.com/ae/en/cat/blankets-throws-20528', 'https://www.ikea.com/ae/en/cat/kitchen-textiles-18850', 'https://www.ikea.com/ae/en/cat/baby-textiles-18690', 'https://www.ikea.com/ae/en/cat/childrens-textiles-18730', 'https://www.ikea.com/ae/en/cat/table-linen-20538', 'https://www.ikea.com/ae/en/cat/outdoor-cushions-17893', 'https://www.ikea.com/ae/en/cat/rugs-mats-flooring-rm001', 'https://www.ikea.com/ae/en/cat/rugs-10653', 'https://www.ikea.com/ae/en/cat/bath-mats-20519', 'https://www.ikea.com/ae/en/cat/door-mats-10698', 'https://www.ikea.com/ae/en/cat/outdoor-flooring-21957', 'https://www.ikea.com/ae/en/cat/door-mats-10698', 'https://www.ikea.com/ae/en/cat/lighting-li001', 'https://www.ikea.com/ae/en/cat/decorative-lighting-14971', 'https://www.ikea.com/ae/en/cat/lamps-li002', 'https://www.ikea.com/ae/en/cat/smart-lighting-36812', 'https://www.ikea.com/ae/en/cat/led-light-bulbs-10744', 'https://www.ikea.com/ae/en/cat/outdoor-lighting-17897', 'https://www.ikea.com/ae/en/cat/integrated-lighting-16280', 'https://www.ikea.com/ae/en/cat/home-smart-hs001', 'https://www.ikea.com/ae/en/cat/electric-blinds-44531', 'https://www.ikea.com/ae/en/cat/smart-lighting-36812', 'https://www.ikea.com/ae/en/cat/wi-fi-speakers-46194', 'https://www.ikea.com/ae/en/cat/home-electronics-he001', 'https://www.ikea.com/ae/en/cat/appliances-ka002', 'https://www.ikea.com/ae/en/cat/cables-chargers-40845', 'https://www.ikea.com/ae/en/cat/speakers-40842', 'https://www.ikea.com/ae/en/cat/mobile-tablet-accessories-40843', 'https://www.ikea.com/ae/en/cat/outdoor-products-od001', 'https://www.ikea.com/ae/en/cat/outdoor-furniture-od003', 'https://www.ikea.com/ae/en/cat/bbqs-24898', 'https://www.ikea.com/ae/en/cat/outdoor-organising-21958', 'https://www.ikea.com/ae/en/cat/parasols-gazebos-17887', 'https://www.ikea.com/ae/en/cat/outdoor-rugs-34204', 'https://www.ikea.com/ae/en/cat/outdoor-plant-pots-31787', 'https://www.ikea.com/ae/en/cat/outdoor-accessories-34203', 'https://www.ikea.com/ae/en/cat/outdoor-cushions-17893', 'https://www.ikea.com/ae/en/cat/outdoor-lighting-17897', 'https://www.ikea.com/ae/en/cat/outdoor-flooring-21957', 'https://www.ikea.com/ae/en/cat/vaeddoe-series-31434', 'https://www.ikea.com/ae/en/cat/pots-plants-pp001', 'https://www.ikea.com/ae/en/cat/flower-pots-planters-pp004', 'https://www.ikea.com/ae/en/cat/plants-flowers-pp003', 'https://www.ikea.com/ae/en/cat/plant-stands-movers-20494', 'https://www.ikea.com/ae/en/cat/growing-accessories-24887', 'https://www.ikea.com/ae/en/cat/laundry-cleaning-lc001', 'https://www.ikea.com/ae/en/cat/laundry-cabinets-shelving-48925', 'https://www.ikea.com/ae/en/cat/laundry-baskets-20601', 'https://www.ikea.com/ae/en/cat/ironing-boards-20608', 'https://www.ikea.com/ae/en/cat/drying-racks-20602', 'https://www.ikea.com/ae/en/cat/waste-bins-bags-16213', 'https://www.ikea.com/ae/en/cat/cleaning-accessories-20609', 'https://www.ikea.com/ae/en/cat/dishwashing-accessories-15938', 'https://www.ikea.com/ae/en/cat/home-improvement-hi001', 'https://www.ikea.com/ae/en/cat/knobs-handles-16298', 'https://www.ikea.com/ae/en/cat/oils-stains-product-care-42948', 'https://www.ikea.com/ae/en/cat/outdoor-flooring-21957', 'https://www.ikea.com/ae/en/cat/acoustic-panels-46077', 'https://www.ikea.com/ae/en/cat/moving-supplies-46078', 'https://www.ikea.com/ae/en/cat/tools-fittings-16292', 'https://www.ikea.com/ae/en/cat/safety-16249', 'https://www.ikea.com/ae/en/cat/splashbacks-wall-panels-19121', 'https://www.ikea.com/ae/en/cat/safety-products-sp001', 'https://www.ikea.com/ae/en/cat/child-safety-16257', 'https://www.ikea.com/ae/en/cat/home-safety-16256', 'https://www.ikea.com/ae/en/cat/leisure-travel-lt001', 'https://www.ikea.com/ae/en/cat/bags-16248', 'https://www.ikea.com/ae/en/cat/games-recreation-24847', 'https://www.ikea.com/ae/en/cat/paper-shop-25227', 'https://www.ikea.com/ae/en/cat/summer-ss001', 'https://www.ikea.com/ae/en/cat/bbqs-24898', 'https://www.ikea.com/ae/en/cat/decorative-lighting-14971', 'https://www.ikea.com/ae/en/cat/gardening-47430', 'https://www.ikea.com/ae/en/cat/picnic-outdoor-recreation-42924', 'https://www.ikea.com/ae/en/cat/summer-decoration-47432', 'https://www.ikea.com/ae/en/cat/summer-party-47429', 'https://www.ikea.com/ae/en/cat/summer-textiles-47431', 'https://www.ikea.com/ae/en/cat/winter-collections-wt001', 'https://www.ikea.com/ae/en/cat/winter-cooking-baking-49154', 'https://www.ikea.com/ae/en/cat/winter-decoration-49149', 'https://www.ikea.com/ae/en/cat/winter-lights-49150', 'https://www.ikea.com/ae/en/cat/winter-pots-plants-49151', 'https://www.ikea.com/ae/en/cat/winter-tableware-49153', 'https://www.ikea.com/ae/en/cat/winter-textiles-49152', 'https://www.ikea.com/ae/en/cat/toys-play-18734']
+main_cats = read_pickle_file('main_cats.pickle')
+cats = read_pickle_file('cats.pickle')
 
 def get_cats():
 	for idx,url in enumerate(main_cats):
@@ -37,3 +53,38 @@ def get_cats():
 		print(f'Remaining: {len(main_cats)-idx}')
 		sleep(5)
 	return(cats)
+
+def get_sub_cats():
+	try:
+		sub_cats = []
+		for idx,url in enumerate(cats):
+			print(url)
+			f = urllib.request.urlopen(url)
+			rep = str(f.read().decode("utf-8"))
+			sp = rep.split('\n')
+			cntr = 1
+			for i in sp:
+				if 'https://www.ikea.com/ae/en/cat/' in i:
+					try:
+						sc = '<a href="'
+						ec = '/"'
+						si = i.index(sc)+9
+						ei = i.index(ec)
+						r=i[si:ei]
+						exclude = ['https://www.ikea.com/ae/en/cat/products-products', 'https://www.ikea.com/ae/en/cat/furniture-fu001']
+						if ((r in exclude) or (len(r) < 5)):
+							pass
+						else:
+							print(r)
+							sub_cats.append(r)
+							write_file(str(sub_cats))
+							cntr += 1
+					except:
+						pass
+			print(f'Remaining: {len(cats)-idx}')
+			sleep(2)
+		return(sub_cats)
+	except:
+		pass
+
+write_file(str(get_sub_cats()))
