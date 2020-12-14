@@ -1,6 +1,7 @@
 import urllib.request
 from time import sleep
 import pickle
+import ast
 import io
 
 def read_pickle_file(fn):
@@ -92,20 +93,22 @@ cats = read_pickle_file('cats.pickle')
 sub_cats = read_pickle_file('sub_cats.pickle')
 products = {}
 
-def get_no_of_pages(url):
-	f = urllib.request.urlopen(url)
-	rep = str(f.read().decode("utf-8"))
-	print(rep)
-	write_file(rep)
-	print(type(rep))
-
 def extract_products():
-	for idx,val in enumerate(sub_cats[0:1]):
+	for idx,val in enumerate(sub_cats[1:2]):
 		print(val)
-		# get_no_of_pages(val)
+		cat_id = val.split('/')[-1].split('-')[-1]
+		print(cat_id)
+		json_url = f'https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category={cat_id}&size=480'
+		f = urllib.request.urlopen(json_url)
+		rep = str(f.read().decode("utf-8"))
+		d=ast.literal_eval(rep)
+		print(type(d),d)
+		write_file(rep)
+		print(json_url)
 
-# extract_products()
-url = 'https://www.ikea.com/ae/en/cat/paper-media-boxes-16202/'
-f = urllib.request.urlopen(url)
-rep = str(f.read().decode("utf-8"))
-write_file(rep)
+extract_products()
+# url = 'https://www.ikea.com/ae/en/cat/paper-media-boxes-16202/'
+# f = urllib.request.urlopen(url)
+# rep = str(f.read().decode("utf-8"))
+# write_file(rep)
+# https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category=16202&size=520
