@@ -92,7 +92,6 @@ def extract_sub_cats():
 main_cats = read_pickle_file('main_cats.pickle')
 cats = read_pickle_file('cats.pickle')
 sub_cats = read_pickle_file('sub_cats.pickle')
-products = {}
 
 def extract_products():
 	for idx,val in enumerate(sub_cats[227:]):
