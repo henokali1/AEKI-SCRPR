@@ -3,6 +3,7 @@ from time import sleep
 import pickle
 import ast
 import io
+import json
 
 def read_pickle_file(fn):
 	try:
@@ -12,10 +13,10 @@ def read_pickle_file(fn):
 	except:
 		print(f"Couldn't read {fn}")
 
-def write_pickle_file(fn):
+def write_pickle_file(fn, val):
 	try:
 		with open(fn, 'wb') as handle:
-			pickle.dump(fn, handle, protocol=pickle.HIGHEST_PROTOCOL)
+			pickle.dump(val, handle, protocol=pickle.HIGHEST_PROTOCOL)
 	except:
 		print(f"Couldn't write {fn}")
 
@@ -97,18 +98,19 @@ def extract_products():
 	for idx,val in enumerate(sub_cats[1:2]):
 		print(val)
 		cat_id = val.split('/')[-1].split('-')[-1]
-		print(cat_id)
 		json_url = f'https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category={cat_id}&size=480'
 		f = urllib.request.urlopen(json_url)
 		rep = str(f.read().decode("utf-8"))
-		d=ast.literal_eval(rep)
-		print(type(d),d)
-		write_file(rep)
-		print(json_url)
+		d=json.loads(rep)
+		po=d['productListPage']['productWindow']
+		print(f'Remainig: {len(sub_cats)-idx}')
+		for i in po:
+			d={}
+			pid = i['id']
+			d['id'] = pid
+			d['url'] = i['pipUrl']
+			od = read_pickle_file('products.pickle')
+			od[pid] = d
+			write_pickle_file('products.pickle',od)
 
 extract_products()
-# url = 'https://www.ikea.com/ae/en/cat/paper-media-boxes-16202/'
-# f = urllib.request.urlopen(url)
-# rep = str(f.read().decode("utf-8"))
-# write_file(rep)
-# https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category=16202&size=520
