@@ -95,7 +95,7 @@ sub_cats = read_pickle_file('sub_cats.pickle')
 products = {}
 
 def extract_products():
-	for idx,val in enumerate(sub_cats[1:2]):
+	for idx,val in enumerate(sub_cats[227:]):
 		print(val)
 		cat_id = val.split('/')[-1].split('-')[-1]
 		json_url = f'https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category={cat_id}&size=480'
@@ -103,7 +103,7 @@ def extract_products():
 		rep = str(f.read().decode("utf-8"))
 		d=json.loads(rep)
 		po=d['productListPage']['productWindow']
-		print(f'Remainig: {len(sub_cats)-idx}')
+		print(f'Remainig: {len(sub_cats[227:])-idx}')
 		for i in po:
 			d={}
 			pid = i['id']
