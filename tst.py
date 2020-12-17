@@ -90,14 +90,20 @@ def extract_sub_cats():
 
 
 def ext_str(val, sis, eis):
-        si = val.index(sis)+len(sis)
-        ei = val[si:].index(eis)+si
-        return val[si:ei]
+	try:
+		si = val.index(sis)+len(sis)
+		ei = val[si:].index(eis)+si
+		return val[si:ei]
+	except:
+		print('Err', val)
 
 def ext_pkg(val, sis, eis):
-        si = val.index(sis)+len(sis)
-        ei = val[si:].index(eis)+si
-        return float(val[si:ei].split(' ')[0])
+	try:
+		si = val.index(sis)+len(sis)
+		ei = val[si:].index(eis)+si
+		return float(val[si:ei].split(' ')[0])
+	except:
+		print('Err: ',val)
 
 main_cats = read_pickle_file('main_cats.pickle')
 cats = read_pickle_file('cats.pickle')
@@ -125,7 +131,8 @@ def extract_products():
 
 def extract_product_details():
 	for i,val in enumerate(products):
-		if i < 1:
+		if i > 6628:
+			print(f'Remaining: {len(products)-i}',i)
 			print(products[val])
 			url = products[val]['url']
 			print(url)
@@ -133,60 +140,89 @@ def extract_product_details():
 			rep = str(f.read().decode("utf-8"))
 
 			np = products[val]
+			try:
+				brand_sis = '<div class="range-revamp-header-section__title--big">'
+				brand_eis = '</div>'
+				brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
+				np['brand'] = brand
+				print('brand:',brand)
+			except:
+				err.append(val)
 
-			brand_sis = '<div class="range-revamp-header-section__title--big">'
-			brand_eis = '</div>'
-			brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
-			np['brand'] = brand
-			print('brand:',brand)
+
+			try:
+				title_sis = '<span class="range-revamp-header-section__description-text">'
+				title_eis = '</span>'
+				title = ext_str(val=rep,sis=title_sis,eis=title_eis)
+				np['title'] = title
+				print('title:',title)
+			except:
+				err.append(val)
+
+			try:
+				price_sis = '<span class="range-revamp-price__integer">'
+				price_eis = '</span>'
+				price = ext_str(val=rep,sis=price_sis,eis=price_eis)
+				np['price'] = float(price)
+				print('price:',price)
+			except:
+				err.append(val)
+
+			try:
+				width_sis = 'class="range-revamp-product-details__label">Width: '
+				width_eis = '</span><span class="range-revamp-product-details__label">Height:'
+				width = ext_pkg(rep,width_sis,width_eis)
+				np['width'] = width
+				print('width:',width)
+			except:
+				err.append(val)
+
+			try:
+				height_sis = '</span><span class="range-revamp-product-details__label">Height: '
+				height_eis = '</span><span class="range-revamp-product-details__label">Length: '
+				height = ext_pkg(rep,height_sis,height_eis)
+				np['height'] = height
+				print('height:',height)
+			except:
+				err.append(val)
+
+			try:
+				length_sis = '</span><span class="range-revamp-product-details__label">Length: '
+				length_eis = '</span><span class="range-revamp-product-details__label">Weight: '
+				length = ext_pkg(rep,length_sis,length_eis)
+				np['length'] = length
+				print('length:',length)
+			except:
+				err.append(val)
+
+			try:
+				weight_sis = '</span><span class="range-revamp-product-details__label">Weight: '
+				weight_eis = '</span><span class="range-revamp-product-details__label">Package(s):'
+				weight = ext_pkg(rep,weight_sis,weight_eis)
+				np['weight'] = weight
+				print('weight:',weight)
+			except:
+				err.append(val)
+
+			try:
+				delivery_availability_sis = '<span class="range-revamp-stockcheck__text">'
+				delivery_availability_eis = '</span>'
+				delivery_availability = ext_str(val=rep,sis=delivery_availability_sis,eis=delivery_availability_eis)
+				np['delivery_availability'] = delivery_availability
+				print('delivery_availability:',delivery_availability)
+			except:
+				err.append(val)
+
+			try:
+				op = read_pickle_file('products.pickle')
+				op[val] = np
+				write_pickle_file('products.pickle', op)
+				t = read_pickle_file('products.pickle')
+				print(t[val])
+			except:
+				err.append(val)
 
 
-			title_sis = '<span class="range-revamp-header-section__description-text">'
-			title_eis = '</span>'
-			title = ext_str(val=rep,sis=title_sis,eis=title_eis)
-			np['title'] = title
-			print('title:',title)
-
-			price_sis = '<span class="range-revamp-price__integer">'
-			price_eis = '</span>'
-			price = ext_str(val=rep,sis=price_sis,eis=price_eis)
-			np['price'] = float(price)
-			print('price:',price)
-
-			width_sis = 'class="range-revamp-product-details__label">Width: '
-			width_eis = '</span><span class="range-revamp-product-details__label">Height:'
-			width = ext_pkg(rep,width_sis,width_eis)
-			np['width'] = width
-			print('width:',width)
-
-			height_sis = '</span><span class="range-revamp-product-details__label">Height: '
-			height_eis = '</span><span class="range-revamp-product-details__label">Length: '
-			height = ext_pkg(rep,height_sis,height_eis)
-			np['height'] = height
-			print('height:',height)
-
-			length_sis = '</span><span class="range-revamp-product-details__label">Length: '
-			length_eis = '</span><span class="range-revamp-product-details__label">Weight: '
-			length = ext_pkg(rep,length_sis,length_eis)
-			np['length'] = length
-			print('length:',length)
-
-			weight_sis = '</span><span class="range-revamp-product-details__label">Weight: '
-			weight_eis = '</span><span class="range-revamp-product-details__label">Package(s):'
-			weight = ext_pkg(rep,weight_sis,weight_eis)
-			np['weight'] = weight
-			print('weight:',weight)
-
-			delivery_availability_sis = '<span class="range-revamp-stockcheck__text">'
-			delivery_availability_eis = '</span>'
-			delivery_availability = ext_str(val=rep,sis=delivery_availability_sis,eis=delivery_availability_eis)
-			np['delivery_availability'] = delivery_availability
-			print('delivery_availability:',delivery_availability)
-
-			op = read_pickle_file('products.pickle')
-			op[val] = np
-			write_pickle_file('products.pickle', op)
-			t = read_pickle_file('products.pickle')
-			print(t[val])
-
+err=[]
 extract_product_details()
+print(err)
