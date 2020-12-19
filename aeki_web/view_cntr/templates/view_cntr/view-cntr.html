@@ -1,0 +1,6 @@
+<h1>View Counter</h1>
+<ul>
+	{% for p in products %}
+	<li><a target="_blank" href="{{ p.product.url }}">{{p.count}}  -  {{ p.product.title }}</a></li>
+	{% endfor %}
+</ul>
