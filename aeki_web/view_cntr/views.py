@@ -7,6 +7,6 @@ def dashboard(request):
 
 def view_cntr(request):
 	products = dailyViewCount.objects.all()
-	products = products.order_by('-count')[0:49]
+	products = products.order_by('-count')[0:50]
 	args = {'products': products}
 	return render(request, 'view_cntr/view-cntr.html', args)
