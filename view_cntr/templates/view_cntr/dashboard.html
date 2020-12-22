@@ -5,46 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Search for Products</title>
 </head>
 <body>
+    <a href="/view-cntr">View Counter</a>
     <div class="container">
         <div class="card z-depth-5">
-            <h3 class="center"><b>Search for Products</b></h3>
-            <div class="row">
-                <div class="col s12 m3 input-field">
-                    <input id="price" type="number">
-                    <label for="price">Price</label>
-                </div>
-                <div class="col s12 m3 input-field">
-                    <input id="width" type="number">
-                    <label for="width">Width</label>
-                </div>
-                <div class="col s12 m3 input-field">
-                    <input id="height" type="number">
-                    <label for="height">Height</label>
-                </div>
-                <div class="col s12 m3 input-field">
-                    <input id="length" type="number">
-                    <label for="length">Length</label>
-                </div>
-                <div class="col s12 m3 input-field">
-                    <input id="weight" type="number">
-                    <label for="weight">Weight</label>
-                </div>
-                <div class="col s12 m3 input-field">
-                    <select>
-                        <option value="0" disabled selected>-----------------</option>
-                        <option selected value="1">Available for delivery</option>
-                        <option value="2">Not available for delivery</option>
-                    </select>
-                    <label>Delivery Availability</label>
-                </div>
-            </div>
-            <a href="/view-cntr">View Counter</a>
             <br>
-            <br>
+            <h3 class="center"><b>Products</b></h3>
+            <form action="">
+                <div class="row">
+                    <div class="col s12 m3 input-field">
+                        <input id="price_min" type="number">
+                        <label for="price_min">Price(min)</label>
+                    </div>
+                    <div class="col s12 m3 input-field">
+                        <input id="price_max" type="number">
+                        <label for="price_max">Price(max)</label>
+                    </div>
+                    <div class="col s12 m3 input-field">
+                        <input id="width" type="number">
+                        <label for="width">Width(max)</label>
+                    </div>
+                    <div class="col s12 m3 input-field">
+                        <input id="height" type="number">
+                        <label for="height">Height(max)</label>
+                    </div>
+                    <div class="col s12 m3 input-field">
+                        <input id="length" type="number">
+                        <label for="length">Length(max)</label>
+                    </div>
+                    <div class="col s12 m3 input-field">
+                        <input id="weight" type="number">
+                        <label for="weight">Weight(max)</label>
+                    </div>
+                    <div class="col s12 m3 input-field">
+                        <select>
+                            <option value="0" disabled selected>--------------------------</option>
+                            <option selected value="Available for delivery">Available for delivery</option>
+                            <option value="Not available for delivery">Not available for delivery</option>
+                        </select>
+                        <label>Delivery Availability</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col right">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Search
+                            <i class="material-icons right">search</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
             <br>
         </div>
     </div>
@@ -54,6 +66,7 @@
     <script>
         $(document).ready(function(){
             $('select').formSelect();
+            $('.datepicker').datepicker();
         });
     </script>
 </body>
