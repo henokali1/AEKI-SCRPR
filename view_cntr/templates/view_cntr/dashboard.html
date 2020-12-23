@@ -13,40 +13,33 @@
     <div class="container">
         <div class="card z-depth-5">
             <br>
-            <h3 class="center"><b>Products</b></h3>
-            <form action="">
+            <h3 class="center"><b>Filter</b></h3>
+            <form method="POST">
+							{% csrf_token %}
                 <div class="row">
                     <div class="col s12 m3 input-field">
-                        <input id="price_min" type="number">
+                        <input id="price_min" name="price_min" type="number" value="{{price_min}}">
                         <label for="price_min">Price(min)</label>
                     </div>
                     <div class="col s12 m3 input-field">
-                        <input id="price_max" type="number">
+                        <input id="price_max" name="price_max" type="number" value="{{price_max}}">
                         <label for="price_max">Price(max)</label>
                     </div>
                     <div class="col s12 m3 input-field">
-                        <input id="width" type="number">
+                        <input id="width" name="width" type="number" value="{{width}}">
                         <label for="width">Width(max)</label>
                     </div>
                     <div class="col s12 m3 input-field">
-                        <input id="height" type="number">
+                        <input id="height" name="height" type="number" value="{{height}}">
                         <label for="height">Height(max)</label>
                     </div>
                     <div class="col s12 m3 input-field">
-                        <input id="length" type="number">
+                        <input id="length" name="length" type="number" value="{{length}}">
                         <label for="length">Length(max)</label>
                     </div>
                     <div class="col s12 m3 input-field">
-                        <input id="weight" type="number">
+                        <input id="weight" name="weight" type="number" value="{{weight}}">
                         <label for="weight">Weight(max)</label>
-                    </div>
-                    <div class="col s12 m3 input-field">
-                        <select>
-                            <option value="0" disabled selected>--------------------------</option>
-                            <option selected value="Available for delivery">Available for delivery</option>
-                            <option value="Not available for delivery">Not available for delivery</option>
-                        </select>
-                        <label>Delivery Availability</label>
                     </div>
                 </div>
                 <div class="row">
@@ -56,7 +49,30 @@
                         </button>
                     </div>
                 </div>
-            </form>
+						</form>
+						
+						<br>
+						{% if products %}
+						<table class="striped">
+							<thead>
+								<tr>
+										<th>Title</th>
+										<th>Price</th>
+										<th>Weight</th>
+								</tr>
+							</thead>
+			
+							<tbody>
+								{% for product in products %}
+								<tr>
+									<td><a target="_blank" href="{{product.url}}">{{product.brand}} - {{product.title}}</a></td>
+									<td><a target="_blank" href="{{product.url}}">dh{{product.price}}</a></td>
+									<td><a target="_blank" href="{{product.url}}">{{product.weight}}Kg</a></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						{% endif %}
             <br>
         </div>
     </div>
