@@ -15,7 +15,7 @@
             <br>
             <h3 class="center"><b>Filter</b></h3>
             <form method="POST">
-							{% csrf_token %}
+				{% csrf_token %}
                 <div class="row">
                     <div class="col s12 m3 input-field">
                         <input id="price_min" name="price_min" type="number" value="{{price_min}}">
@@ -41,6 +41,14 @@
                         <input id="weight" name="weight" type="number" value="{{weight}}">
                         <label for="weight">Weight(max)</label>
                     </div>
+                    <div class="col s12 m3 input-field">
+                        <select name="sort_by">
+                          <option value="" disabled></option>
+                          <option value="high_to_low">Price (High to Low)</option>
+                          <option value="low_to_high">Price (Low to High)</option>
+                        </select>
+                        <label>Sort By</label>
+                      </div>
                 </div>
                 <div class="row">
                     <div class="col right">
