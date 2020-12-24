@@ -11,7 +11,7 @@ def dashboard(request):
 		try:
 			price_max = float(request.POST['price_max'])
 		except:
-			price_max = 0.0
+			price_max = 100000000.0
 		try:
 			width_max = float(request.POST['width'])
 			width_min = 0.0
@@ -38,11 +38,7 @@ def dashboard(request):
 			weight_min = 0.0
 		
 		sort_by = request.POST['sort_by']
-		if sort_by == 'high_to_low':
-			srt = '-price'
-		if sort_by == 'low_to_high':
-			srt = 'price'
-		print(sort_by)
+		srt = '-price' if sort_by == 'high_to_low' else 'price'
 
 		args['price_min'] = price_min
 		args['price_max'] = price_max
@@ -50,13 +46,13 @@ def dashboard(request):
 		args['height'] = height_max
 		args['length'] = length_max
 		args['weight'] = weight_max
+		args['srt'] = srt
 
 		products = Product.objects.filter(
 			delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
 			width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
 			height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
 		).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
-		# products = products.order_by('-count')[0:50]
 		products = products[0:50]
 		args['products'] = products
 

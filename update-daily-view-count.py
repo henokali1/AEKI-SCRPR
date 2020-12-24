@@ -1,4 +1,3 @@
-
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aeki_web.settings')
 
@@ -6,6 +5,7 @@ import django
 django.setup()
 from django.core.wsgi import get_wsgi_application
 from view_cntr.models import *
+from django.db.models import Avg
 
 import urllib.request
 from time import sleep
@@ -46,6 +46,10 @@ def update_view_cnt():
 			print(f'{i.pid} Added to DB.')
 		else:
 			print(f'{i.pid} Already Exists.')
+		
+		avg_cnt = dailyViewCount.objects.filter(product=i.pk).aggregate(Avg('count'))
+		avg_cnt = int(avg_cnt['count__avg'])
+		Product.objects.filter(pk=i.pk).update(avg_view=avg_cnt)
 
 	return err
 

@@ -44,8 +44,13 @@
                     <div class="col s12 m3 input-field">
                         <select name="sort_by">
                           <option value="" disabled></option>
+                          {% if srt == 'price' %}
                           <option value="high_to_low">Price (High to Low)</option>
+                          <option value="low_to_high" selected>Price (Low to High)</option>
+                          {% else %}
+                          <option value="high_to_low" selected>Price (High to Low)</option>
                           <option value="low_to_high">Price (Low to High)</option>
+                          {% endif %}
                         </select>
                         <label>Sort By</label>
                       </div>

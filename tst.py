@@ -6,6 +6,7 @@ import django
 django.setup()
 from django.core.wsgi import get_wsgi_application
 from view_cntr.models import *
+from django.db.models import Avg
 
 import urllib.request
 from time import sleep
@@ -260,5 +261,11 @@ def add_products_to_sql_db():
 		if created:
 			print(f'{products[val]["id"]} Added to DB.')
 
-products = read_pickle_file('products.pickle')
-err = []
+products = Product.objects.all()
+tot = len(products)
+for i,p in enumerate(products):
+	print(f'Remaining: {tot - i}')
+	avg_cnt = dailyViewCount.objects.filter(product=p.pk).aggregate(Avg('count'))
+	avg_cnt = int(avg_cnt['count__avg'])
+	print(avg_cnt)
+	Product.objects.filter(pk=p.pk).update(avg_view=avg_cnt)
