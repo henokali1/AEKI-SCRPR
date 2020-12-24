@@ -6,6 +6,7 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Search for Products</title>
 </head>
 <body>
@@ -47,9 +48,19 @@
                           {% if srt == 'price' %}
                           <option value="high_to_low">Price (High to Low)</option>
                           <option value="low_to_high" selected>Price (Low to High)</option>
-                          {% else %}
+                          <option value="avg_daily_view">Daily View (Avg)</option>
+                          {% elif srt == '-price' %}
                           <option value="high_to_low" selected>Price (High to Low)</option>
                           <option value="low_to_high">Price (Low to High)</option>
+                          <option value="avg_daily_view">Daily View (Avg)</option>
+                          {% elif srt == 'avg_daily_view' %}
+                          <option value="high_to_low">Price (High to Low)</option>
+                          <option value="low_to_high" >Price (Low to High)</option>
+                          <option value="avg_daily_view" selected>Daily View (Avg)</option>
+                          {% else %}
+                          <option value="high_to_low">Price (High to Low)</option>
+                          <option value="low_to_high">Price (Low to High)</option>
+                          <option value="avg_daily_view" selected>Daily View (Avg)</option>
                           {% endif %}
                         </select>
                         <label>Sort By</label>
@@ -71,7 +82,9 @@
 								<tr>
 										<th>Title</th>
 										<th>Price</th>
-										<th>Weight</th>
+                                        <th>Weight</th>
+                                        <th>Daily View(Avg)</th>
+                                        <th>Fav</th>
 								</tr>
 							</thead>
 			
@@ -80,7 +93,15 @@
 								<tr>
 									<td><a target="_blank" href="{{product.url}}">{{product.brand}} - {{product.title}}</a></td>
 									<td><a target="_blank" href="{{product.url}}">dh{{product.price}}</a></td>
-									<td><a target="_blank" href="{{product.url}}">{{product.weight}}Kg</a></td>
+                                    <td><a target="_blank" href="{{product.url}}">{{product.weight}}Kg</a></td>
+                                    <td><a target="_blank" href="{{product.url}}">{{product.avg_view}}</a></td>
+                                    <td>
+                                        {% if product.is_fav %}
+                                            <i id="{{product.pk}}" onclick="fav(`{{product.pk}}`)" class="fa fa-heart"></i>
+                                        {% else %}
+                                            <i id="{{product.pk}}" onclick="fav(`{{product.pk}}`)" class="fa fa-heart-o"></i>
+                                        {% endif %}
+                                    </td>
 								</tr>
 								{% endfor %}
 							</tbody>
@@ -98,5 +119,26 @@
             $('.datepicker').datepicker();
         });
     </script>
+    <script>
+        function fav(pk){
+          tt = $( "#"+pk )
+          isfav = 'False'
+          if (tt.hasClass('fa-heart-o')) {
+              tt.removeClass('fa-heart-o');
+              tt.addClass('fa-heart');
+              isfav = 'True'
+          } else {
+              tt.removeClass('fa-heart');
+              tt.addClass('fa-heart-o');
+              isfav = 'False'
+          }
+      
+          base_url = window.location.origin;
+          url = base_url + '/fav/'+pk+'/'+isfav+'/'
+          $.get(url, function(data, status){
+            console.log("Data: " + data + "\nStatus: " + status);
+          });
+        }
+      </script>
 </body>
 </html>

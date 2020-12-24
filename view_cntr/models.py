@@ -1,6 +1,7 @@
-from django.db import models
 from django.utils import timezone
 from datetime import datetime
+from django.db import models
+
 
 class Product(models.Model):
 	pid = models.CharField(max_length=250, default="")
@@ -14,6 +15,7 @@ class Product(models.Model):
 	weight = models.FloatField(default=0.0)
 	delivery_availability = models.CharField(max_length=250, default="")
 	avg_view = models.IntegerField(default=0)
+	is_fav = models.BooleanField(default=False)
 
 	def __str__(self):
 		return str(self.pk) + ' - ' + self.pid + ' - ' + self.title

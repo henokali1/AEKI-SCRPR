@@ -1,5 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from .models import *
+
 
 def dashboard(request):
 	args={}
@@ -38,8 +40,13 @@ def dashboard(request):
 			weight_min = 0.0
 		
 		sort_by = request.POST['sort_by']
-		srt = '-price' if sort_by == 'high_to_low' else 'price'
-
+		# srt = '-price' if sort_by == 'high_to_low' else 'price'
+		if sort_by == 'high_to_low':
+			srt = '-price'
+		if sort_by == 'low_to_high':
+			srt = 'price'
+		if sort_by == 'avg_daily_view':
+			srt = '-avg_view'
 		args['price_min'] = price_min
 		args['price_max'] = price_max
 		args['width'] = width_max
@@ -63,3 +70,8 @@ def view_cntr(request):
 	products = products.order_by('-count')[0:50]
 	args = {'products': products}
 	return render(request, 'view_cntr/view-cntr.html', args)
+
+def fav(request, pk, is_fav):
+	val = True if (is_fav == 'True') else False
+	Product.objects.filter(pk=pk).update(is_fav=val)
+	return JsonResponse({'is_fav':str(val)})

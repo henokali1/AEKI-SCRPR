@@ -2,19 +2,19 @@
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aeki_web.settings')
 
-import django
-django.setup()
 from django.core.wsgi import get_wsgi_application
-from view_cntr.models import *
 from django.db.models import Avg
+from view_cntr.models import *
+django.setup()
+import django
 
-import urllib.request
 from time import sleep
+import urllib.request
+import requests
 import pickle
+import json
 import ast
 import io
-import json
-import requests
 
 def read_pickle_file(fn):
 	try:
