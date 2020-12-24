@@ -40,6 +40,7 @@ def dashboard(request):
 			weight_min = 0.0
 		
 		sort_by = request.POST['sort_by']
+		only_fav = False if request.POST['fav'] == 'all' else True
 		# srt = '-price' if sort_by == 'high_to_low' else 'price'
 		if sort_by == 'high_to_low':
 			srt = '-price'
@@ -54,12 +55,20 @@ def dashboard(request):
 		args['length'] = length_max
 		args['weight'] = weight_max
 		args['srt'] = srt
-
-		products = Product.objects.filter(
-			delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-			width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-			height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-		).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
+		args['is_fav'] = 'only_fav' if only_fav else 'all'
+		
+		if only_fav:
+			products = Product.objects.filter(
+				is_fav=True, delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
+				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
+				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
+			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
+		else:
+			products = Product.objects.filter(
+				delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
+				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
+				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
+			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
 		products = products[0:50]
 		args['products'] = products
 

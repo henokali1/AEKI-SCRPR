@@ -65,6 +65,19 @@
                         </select>
                         <label>Sort By</label>
                       </div>
+                      <div class="col s12 m3 input-field">
+                        <select name="fav">
+                          <option value="" disabled></option>
+                          {% if is_fav == 'only_fav' %}
+                          <option value="all">All</option>
+                          <option value="only_fav" selected>Fav</option>
+                          {% else %}
+                          <option value="all" selected>All</option>
+                          <option value="only_fav">Fav</option>
+                          {% endif %}
+                        </select>
+                        <label>All / Fav</label>                          
+                      </div>
                 </div>
                 <div class="row">
                     <div class="col right">
