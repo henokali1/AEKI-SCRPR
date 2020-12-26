@@ -50,7 +50,6 @@ def update_view_cnt():
 		avg_cnt = dailyViewCount.objects.filter(product=i.pk).aggregate(Avg('count'))
 		avg_cnt = int(avg_cnt['count__avg'])
 		Product.objects.filter(pk=i.pk).update(avg_view=avg_cnt)
-		break
 
 	return err
 
