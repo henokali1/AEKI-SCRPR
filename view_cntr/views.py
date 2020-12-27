@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import *
@@ -69,7 +70,16 @@ def dashboard(request):
 				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
 				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
 			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
-		products = products[0:50]
+
+		page = request.GET.get('page', 1)
+		paginator = Paginator(products, 50)
+		try:
+			products = paginator.page(page)
+		except PageNotAnInteger:
+			products = paginator.page(1)
+		except EmptyPage:
+			products = paginator.page(paginator.num_pages)
+		# products = products[0:50]
 		args['products'] = products
 
 	return render(request, 'view_cntr/dashboard.html', args)
@@ -92,5 +102,5 @@ def listed(request, pk, is_listed):
 	return JsonResponse({'is_listed':str(val),'pk':pk})
 
 def daily_view(request, pk):
-	args = {'views': dailyViewCount.objects.filter(pk=pk)[1]}
+	args = {'views': dailyViewCount.objects.filter(product=pk)}
 	return render(request, 'view_cntr/daily_view.html', args)
