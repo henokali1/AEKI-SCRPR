@@ -83,4 +83,10 @@ def view_cntr(request):
 def fav(request, pk, is_fav):
 	val = True if (is_fav == 'True') else False
 	Product.objects.filter(pk=pk).update(is_fav=val)
-	return JsonResponse({'is_fav':str(val)})
+	return JsonResponse({'is_fav':str(val),'pk':pk})
+
+def listed(request, pk, is_listed):
+	val = True if (is_listed == 'True') else False
+	print('listed: ', val)
+	Product.objects.filter(pk=pk).update(is_listed=val)
+	return JsonResponse({'is_listed':str(val),'pk':pk})
