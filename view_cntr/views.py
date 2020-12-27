@@ -90,3 +90,7 @@ def listed(request, pk, is_listed):
 	print('listed: ', val)
 	Product.objects.filter(pk=pk).update(is_listed=val)
 	return JsonResponse({'is_listed':str(val),'pk':pk})
+
+def daily_view(request, pk):
+	args = {'views': dailyViewCount.objects.filter(pk=pk)[1]}
+	return render(request, 'view_cntr/daily_view.html', args)
