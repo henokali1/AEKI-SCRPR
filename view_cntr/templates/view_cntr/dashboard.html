@@ -96,10 +96,10 @@
                   <th>Price</th>
                   <th>Weight</th>
                   <th>Avg. View</th>
-                  <th>Fav</th>
-                  <th>Listed</th>
                   <th><i class="material-icons">equalizer</i></th>
                   <th><i class="material-icons">search</i></th>
+                  <th>Fav</th>
+                  <th>Listed</th>
 								</tr>
 							</thead>
 			
@@ -110,6 +110,8 @@
 									<td><a target="_blank" href="{{product.url}}">dh{{product.price}}</a></td>
                   <td><a target="_blank" href="{{product.url}}">{{product.weight}}Kg</a></td>
                   <td><a target="_blank" href="{{product.url}}">{{product.avg_view}}</a></td>
+                  <td><a target="_blank" href="/daily_view/{{product.pk}}/"><i class="material-icons">equalizer</i></a></td>
+                  <td><a target="_blank" href="https://www.amazon.ae/s?k={{product.title}}&ref=nb_sb_noss"><i class="material-icons">search</i></a></td>
                   <td>
                     {% if product.is_fav %}
                       <i id="{{product.pk}}" onclick="fav(`{{product.pk}}`)" class="fa fa-heart"></i>
@@ -124,8 +126,6 @@
                       <i id="{{product.pk}}_is_listed" onclick="call_is_listed(`{{product.pk}}`)" class="fa fa-circle-o"></i>
                     {% endif %}
                   </td>
-                  <td><a target="_blank" href="/daily_view/{{product.pk}}/"><i class="material-icons">equalizer</i></a></td>
-                  <td><a target="_blank" href="https://www.amazon.ae/s?k={{product.title}}&ref=nb_sb_noss"><i class="material-icons">search</i></a></td>
 								</tr>
 								{% endfor %}
 							</tbody>
