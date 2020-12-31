@@ -8,4 +8,5 @@ urlpatterns = [
     path('fav/<int:pk>/<str:is_fav>/', views.fav),
     path('listed/<int:pk>/<str:is_listed>/', views.listed),
     path('daily_view/<int:pk>/', views.daily_view),
+    path('has_upc/', views.has_upc),
 ]

@@ -9,8 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Search for Products</title>
 </head>
-<body style="background-color: #4d4d4d;">
-    <a href="/view-cntr">View Counter</a>
+<body>
+<!-- <body style="background-color: #4d4d4d;"> -->
+    <ul>
+      <li><a target="_blank" href="/view-cntr">View Counter</a></li>
+      <li><a target="_blank" href="/has_upc">Has UPC</a></li>
+    </ul>
     <div class="container">
         <div class="">
             <br>
@@ -71,9 +75,15 @@
                           {% if is_fav == 'only_fav' %}
                           <option value="all">All</option>
                           <option value="only_fav" selected>Fav</option>
+                          <option value="upc">UPC</option>
+                          {% elif is_fav == 'upc' %}
+                          <option value="all">All</option>
+                          <option value="only_fav">Fav</option>
+                          <option value="upc" selected>UPC</option>
                           {% else %}
                           <option value="all" selected>All</option>
                           <option value="only_fav">Fav</option>
+                          <option value="upc">UPC</option>
                           {% endif %}
                         </select>
                         <label>All / Fav</label>                          

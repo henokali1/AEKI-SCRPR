@@ -1,0 +1,6 @@
+<h1>Has upc</h1>
+<ul>
+{% for product in products %}
+<li><a target="_blank" href="{{product.url}}">{{product.avg_view}} - {{product.brand}} - {{product.title}}</li>
+{% endfor %}
+</ul>

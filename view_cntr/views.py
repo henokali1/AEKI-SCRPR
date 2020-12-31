@@ -41,7 +41,7 @@ def dashboard(request):
 			weight_min = 0.0
 		
 		sort_by = request.POST['sort_by']
-		only_fav = False if request.POST['fav'] == 'all' else True
+		fav = request.POST['fav']
 		# srt = '-price' if sort_by == 'high_to_low' else 'price'
 		if sort_by == 'high_to_low':
 			srt = '-price'
@@ -56,14 +56,21 @@ def dashboard(request):
 		args['length'] = length_max
 		args['weight'] = weight_max
 		args['srt'] = srt
-		args['is_fav'] = 'only_fav' if only_fav else 'all'
+
+		args['is_fav'] = fav
 		
-		if only_fav:
+		if fav == 'only_fav':
 			products = Product.objects.filter(
 				is_fav=True, delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
 				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
 				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
 			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
+		elif fav == 'upc':
+			products = Product.objects.filter(
+				delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
+				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
+				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
+			).order_by(srt).exclude(upc='')
 		else:
 			products = Product.objects.filter(
 				delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
@@ -72,14 +79,13 @@ def dashboard(request):
 			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
 
 		page = request.GET.get('page', 1)
-		paginator = Paginator(products, 50)
+		paginator = Paginator(products, 500)
 		try:
 			products = paginator.page(page)
 		except PageNotAnInteger:
 			products = paginator.page(1)
 		except EmptyPage:
 			products = paginator.page(paginator.num_pages)
-		# products = products[0:50]
 		args['products'] = products
 
 	return render(request, 'view_cntr/dashboard.html', args)
@@ -104,3 +110,8 @@ def listed(request, pk, is_listed):
 def daily_view(request, pk):
 	args = {'views': dailyViewCount.objects.filter(product=pk)}
 	return render(request, 'view_cntr/daily_view.html', args)
+
+def has_upc(request):
+	p=Product.objects.exclude(upc='').order_by('-avg_view')
+	args = {'products':p}
+	return render(request, 'view_cntr/has_upc.html', args)
