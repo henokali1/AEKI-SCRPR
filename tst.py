@@ -1,20 +1,20 @@
-
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aeki_web.settings')
 
-from django.core.wsgi import get_wsgi_application
-from django.db.models import Avg
-from view_cntr.models import *
-django.setup()
 import django
+django.setup()
+from django.core.wsgi import get_wsgi_application
+from view_cntr.models import *
+from django.db.models import Avg
 
-from time import sleep
 import urllib.request
-import requests
+from time import sleep
 import pickle
-import json
 import ast
 import io
+import json
+import requests
+
 
 def read_pickle_file(fn):
 	try:
@@ -30,6 +30,11 @@ def write_pickle_file(fn, val):
 			pickle.dump(val, handle, protocol=pickle.HIGHEST_PROTOCOL)
 	except:
 		print(f"Couldn't write {fn}")
+
+def read_csv_file(fn):
+	with open(fn,'r') as f:
+		rd = f.read()
+	return rd
 
 def write_file(val, file_name='replay.html'):
 	try:
@@ -261,11 +266,31 @@ def add_products_to_sql_db():
 		if created:
 			print(f'{products[val]["id"]} Added to DB.')
 
-products = Product.objects.all()
-tot = len(products)
-for i,p in enumerate(products):
-	print(f'Remaining: {tot - i}')
-	avg_cnt = dailyViewCount.objects.filter(product=p.pk).aggregate(Avg('count'))
-	avg_cnt = int(avg_cnt['count__avg'])
-	print(avg_cnt)
-	Product.objects.filter(pk=p.pk).update(avg_view=avg_cnt)
+def add_upc_code():
+	fn = 'History_1609245171733.csv'
+	raw = read_csv_file(fn)
+	sp = raw.split('\n')
+	upc = []
+	upc_cntr = 0
+	in_db = {}
+	tot = len(sp)
+	err = []
+
+	for idx,i in enumerate(sp):
+		print(f'Remaining: {tot - idx}')
+		if 'ITF' in i:
+			full_upc = i.split(',')[4]
+			upc.append(full_upc)
+			pid = full_upc[:8]
+			p=Product.objects.filter(pid=pid)
+			if len(p) > 0:
+				p.update(upc=full_upc)
+				print(f'UPC Added \t{p[0].title} \t{p[0].url}')
+				upc_cntr += 1
+			else:
+				err.append(full_upc)
+	print('err=', len(err))
+	write_file(str(err),'upc-err.txt')
+	print(f'{upc_cntr} UPC\'s added')
+
+add_upc_code()
