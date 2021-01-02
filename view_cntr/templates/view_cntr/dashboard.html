@@ -103,6 +103,7 @@
 							<thead>
 								<tr>
                   <th>Title</th>
+                  <th>UPC</th>
                   <th>Price</th>
                   <th>Weight</th>
                   <th>Avg. View</th>
@@ -117,6 +118,7 @@
 								{% for product in products %}
 								<tr>
 									<td><a target="_blank" href="{{product.url}}">{{product.brand}} - {{product.title}}</a></td>
+									<td><a target="_blank" href="{{product.url}}">{{product.upc}}</a></td>
 									<td><a target="_blank" href="{{product.url}}">dh{{product.price}}</a></td>
                   <td><a target="_blank" href="{{product.url}}">{{product.weight}}Kg</a></td>
                   <td><a target="_blank" href="{{product.url}}">{{product.avg_view}}</a></td>
@@ -141,6 +143,7 @@
 							</tbody>
 						</table>
 						{% endif %}
+				
             <br>
         </div>
 
