@@ -69,32 +69,29 @@
                         </select>
                         <label>Sort By</label>
                       </div>
-                      <div class="col s12 m3 input-field">
-                        <select name="fav">
-                          <option value="" disabled></option>
-                          {% if is_fav == 'only_fav' %}
-                          <option value="all">All</option>
-                          <option value="only_fav" selected>Fav</option>
-                          <option value="upc">UPC</option>
-                          {% elif is_fav == 'upc' %}
-                          <option value="all">All</option>
-                          <option value="only_fav">Fav</option>
-                          <option value="upc" selected>UPC</option>
-                          {% else %}
-                          <option value="all" selected>All</option>
-                          <option value="only_fav">Fav</option>
-                          <option value="upc">UPC</option>
-                          {% endif %}
-                        </select>
-                        <label>All / Fav</label>                          
-                      </div>
                         <div class="input-field col s12 m3">
                           <select name="include" multiple>
                             <option value="" disabled></option>
+                            {% if all == True %}
+                            <option value="all" selected>ALL</option>
+                            {% else %}
                             <option value="all">ALL</option>
+                            {% endif %}
+                            {% if is_fav == True %}
+                            <option value="fav" selected>FAV</option>
+                            {% else %}
                             <option value="fav">FAV</option>
+                            {% endif %}
+                            {% if upc == True %}
+                            <option value="upc" selected>UPC</option>
+                            {% else %}
                             <option value="upc">UPC</option>
+                            {% endif %}
+                            {% if listed == True %}
+                            <option value="listed" selected>Listed</option>
+                            {% else %}
                             <option value="listed">Listed</option>
+                            {% endif %}
                           </select>
                           <label>Include</label>
                         </div>
@@ -116,7 +113,7 @@
                   <th>UPC</th>
                   <th>Price</th>
                   <th>Weight</th>
-                  <th>Avg. View</th>
+                  <th><i class="material-icons">remove_red_eye</i></th>
                   <th><i class="material-icons">equalizer</i></th>
                   <th><i class="material-icons">search</i></th>
                   <th>Fav</th>

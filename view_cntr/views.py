@@ -41,8 +41,8 @@ def dashboard(request):
 			weight_min = 0.0
 		
 		sort_by = request.POST['sort_by']
-		fav = request.POST['fav']
-		# srt = '-price' if sort_by == 'high_to_low' else 'price'
+		# fav = request.POST['fav']
+
 		if sort_by == 'high_to_low':
 			srt = '-price'
 		if sort_by == 'low_to_high':
@@ -57,27 +57,24 @@ def dashboard(request):
 		args['weight'] = weight_max
 		args['srt'] = srt
 
-		args['is_fav'] = fav
-		
-		if fav == 'only_fav':
-			products = Product.objects.filter(
-				is_fav=True, delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
-		elif fav == 'upc':
-			products = Product.objects.filter(
-				delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-			).order_by(srt).exclude(upc='')
-		else:
-			products = Product.objects.filter(
-				delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-				width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-				height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-			).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
+		include = request.POST.getlist('include')
+		print('include', include)
 
+		products = Product.objects.all()
+
+		if 'fav' in include:
+			products = products.filter(is_fav=True)
+			args['is_fav'] = True
+		if 'upc' in include:
+			products = products.exclude(upc='')
+			args['upc'] = True
+		if 'listed' in include:
+			products = products.filter(is_listed=True)
+			args['listed'] = True
+		if 'all' in include:
+			args['all'] = True
+
+		products = products.order_by(srt).exclude(delivery_availability = 'Not available for delivery')
 		page = request.GET.get('page', 1)
 		paginator = Paginator(products, 500)
 		try:
@@ -169,27 +166,6 @@ def test(request):
 		args['weight'] = weight_max
 		args['srt'] = srt
 
-		# args['is_fav'] = fav
-		
-		# if fav == 'only_fav':
-		# 	products = Product.objects.filter(
-		# 		is_fav=True, delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-		# 		width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-		# 		height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-		# 	).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
-		# elif fav == 'upc':
-		# 	products = Product.objects.filter(
-		# 		delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-		# 		width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-		# 		height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-		# 	).order_by(srt).exclude(upc='')
-		# else:
-		# 	products = Product.objects.filter(
-		# 		delivery_availability = 'Available for delivery', price__gte=price_min, price__lte=price_max,
-		# 		width__gte=width_min, width__lte=width_max, weight__gte=weight_min, weight__lte=weight_max,
-		# 		height__gte=height_min, height__lte=height_max, length__gte=length_min, length__lte=length_max,
-		# 	).order_by(srt).exclude(delivery_availability = 'Not available for delivery')
-
 		include = request.POST.getlist('include')
 		print('include', include)
 
@@ -207,6 +183,7 @@ def test(request):
 		if 'all' in include:
 			args['all'] = True
 
+		products = products.order_by(srt).exclude(delivery_availability = 'Not available for delivery')
 		page = request.GET.get('page', 1)
 		paginator = Paginator(products, 500)
 		try:
