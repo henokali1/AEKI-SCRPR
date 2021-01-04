@@ -240,10 +240,6 @@ def get_view_count(pid):
 	d=json.loads(f.text)
 	return(d['count']['dailyView'])
 
-# main_cats = read_pickle_file('main_cats.pickle')
-# cats = read_pickle_file('cats.pickle')
-# sub_cats = read_pickle_file('sub_cats.pickle')
-
 def add_products_to_sql_db():
 	for i,val in enumerate(products):
 		print(products[val]['id'], f'Remaining: {len(products) - i}')
@@ -293,4 +289,60 @@ def add_upc_code():
 	write_file(str(err),'upc-err.txt')
 	print(f'{upc_cntr} UPC\'s added')
 
-add_upc_code()
+def extract_url(val, sis, eis):
+	si = val.index(sis)
+	ei = val.index(eis)
+	return val[si+len(sis):ei+1]
+
+def get_man_cats():
+	sa = []
+	main_cat_url = []
+	url = 'https://www.ikea.com/ae/en/'
+	f = urllib.request.urlopen(url)
+	rep = f.read().decode("utf-8")
+	sp = rep.split('\n')
+	sis = 'href="'
+	eis = '/"'
+	for i in sp:
+		if '001/' in i:
+			cat_url = extract_url(i, sis, eis)
+			main_cat_url.append(cat_url)
+	print(f'{len(main_cat_url)} main_cat_url extracted')
+	return main_cat_url
+
+def get_cats():
+	cats = []
+	main_cats = get_man_cats()
+	sis = 'href="'
+	eis = '/"'
+	for url in main_cats:
+		f = urllib.request.urlopen(url)
+		rep = f.read().decode("utf-8")
+		sp = rep.split('\n')
+		for i in sp:
+			if 'vn__nav__link' in i:
+				cats.append(extract_url(i, sis, eis))
+	print(f'{len(cats)} cats extracted')
+	return cats
+
+def get_sub_cats():
+	cats = get_cats()
+	sub_cats = []
+	sis = 'href="'
+	eis = '/"'
+	for url in cats:
+		f = urllib.request.urlopen(url)
+		rep = f.read().decode("utf-8")
+		sp = rep.split('\n')
+		for i in sp:
+			if 'vn__nav__link' in i:
+				sub_cats.append(extract_url(i, sis, eis))
+	print(f'{len(sub_cats)} sub_cats extracted')
+	return sub_cats
+
+v=get_sub_cats()
+print(len(v), v[0],v[1])
+# main_cats = read_pickle_file('main_cats.pickle')
+# cats = read_pickle_file('cats.pickle')
+# sub_cats = read_pickle_file('sub_cats.pickle')
+

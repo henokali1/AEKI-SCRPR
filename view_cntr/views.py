@@ -58,7 +58,6 @@ def dashboard(request):
 		args['srt'] = srt
 
 		include = request.POST.getlist('include')
-		print('include', include)
 
 		products = Product.objects.all()
 
