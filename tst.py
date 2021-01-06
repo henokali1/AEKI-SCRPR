@@ -121,7 +121,7 @@ def ext_pkg(val, sis, eis):
 	except:
 		print('Err: ',val)
 
-def extract_products():
+def extract_products_v1():
 	for idx,val in enumerate(sub_cats[227:]):
 		print(val)
 		cat_id = val.split('/')[-1].split('-')[-1]
@@ -322,6 +322,7 @@ def get_cats():
 		for i in sp:
 			if 'vn__nav__link' in i:
 				cats.append(extract_url(i, sis, eis))
+		print(f'{len(cats)} cats extracted')
 	print(f'{len(cats)} cats extracted')
 	return cats
 
@@ -337,11 +338,134 @@ def get_sub_cats():
 		for i in sp:
 			if 'vn__nav__link' in i:
 				sub_cats.append(extract_url(i, sis, eis))
+		print(f'{len(sub_cats)} sub_cats extracted')
 	print(f'{len(sub_cats)} sub_cats extracted')
 	return sub_cats
 
-v=get_sub_cats()
-print(len(v), v[0],v[1])
+def check_for_new_products():
+	sub_cats = get_sub_cats()
+	nw_cntr = 0
+	for idx,val in enumerate(sub_cats):
+		try:
+			print('val: ',val)
+			cat_id = val.split('-')[-1].split('/')[0]
+			json_url = f'https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category={cat_id}&size=480'
+			f = urllib.request.urlopen(json_url)
+			rep = str(f.read().decode("utf-8"))
+			d=json.loads(rep)
+			po=d['productListPage']['productWindow']
+			print(f'Remainig: {len(sub_cats[227:])-idx}')
+			for i in po:
+				d={}
+				pid = i['id']
+				url = i['pipUrl']
+				obj, created = Product.objects.update_or_create(
+					pid=pid, url=url,
+				)
+				if created:
+					nw_cntr += 1
+					print('New product Added:  ',obj)
+				else:
+					print('Product Already exists: ',obj)
+		except:
+			print('Err', idx)
+
+
+def update_product_details():
+	check_for_new_products()
+	err = []
+	products = Product.objects.all()
+	for i,val in enumerate(products):
+		print(f'Remaining: {len(products)-i}',i)
+		url = val.url
+		print(url)
+		f = urllib.request.urlopen(url)
+		rep = str(f.read().decode("utf-8"))
+
+		# try:
+		# 	brand_sis = '<div class="range-revamp-header-section__title--big">'
+		# 	brand_eis = '</div>'
+		# 	brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
+		# 	val.update(brand=brand)
+		# 	print('brand:',brand)
+		# except:
+		# 	err.append(val)
+		brand_sis = '<div class="range-revamp-header-section__title--big">'
+		brand_eis = '</div>'
+		brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
+		Product.objects.filter(pk=val.pk).update(brand=brand)
+		print('brand:',brand)
+
+
+		try:
+			title_sis = '<span class="range-revamp-header-section__description-text">'
+			title_eis = '</span>'
+			title = ext_str(val=rep,sis=title_sis,eis=title_eis)
+			print('title:',title)
+			Product.objects.filter(pk=val.pk).update(title=title)
+		except:
+			err.append(val)
+		
+		
+
+		try:
+			price_sis = '<span class="range-revamp-price__integer">'
+			price_eis = '</span>'
+			price = ext_str(val=rep,sis=price_sis,eis=price_eis)
+			print('price:',price)
+			Product.objects.filter(pk=val.pk).update(price=price)
+		except:
+			err.append(val)
+
+		try:
+			width_sis = 'class="range-revamp-product-details__label">Width: '
+			width_eis = '</span><span class="range-revamp-product-details__label">Height:'
+			width = ext_pkg(rep,width_sis,width_eis)
+			print('width:',width)
+			Product.objects.filter(pk=val.pk).update(width=width)
+		except:
+			err.append(val)
+
+		try:
+			height_sis = '</span><span class="range-revamp-product-details__label">Height: '
+			height_eis = '</span><span class="range-revamp-product-details__label">Length: '
+			height = ext_pkg(rep,height_sis,height_eis)
+			print('height:',height)
+			Product.objects.filter(pk=val.pk).update(height=height)
+		except:
+			err.append(val)
+
+		try:
+			length_sis = '</span><span class="range-revamp-product-details__label">Length: '
+			length_eis = '</span><span class="range-revamp-product-details__label">Weight: '
+			length = ext_pkg(rep,length_sis,length_eis)
+			print('length:',length)
+			Product.objects.filter(pk=val.pk).update(length=length)
+		except:
+			err.append(val)
+
+		try:
+			weight_sis = '</span><span class="range-revamp-product-details__label">Weight: '
+			weight_eis = '</span><span class="range-revamp-product-details__label">Package(s):'
+			weight = ext_pkg(rep,weight_sis,weight_eis)
+			print('weight:',weight)
+			Product.objects.filter(pk=val.pk).update(weight=weight)
+		except:
+			err.append(val)
+
+		try:
+			delivery_availability_sis = '<span class="range-revamp-stockcheck__text">'
+			delivery_availability_eis = '</span>'
+			delivery_availability = ext_str(val=rep,sis=delivery_availability_sis,eis=delivery_availability_eis)
+			print('delivery_availability:',delivery_availability)
+			Product.objects.filter(pk=val.pk).update(delivery_availability=delivery_availability)
+		except:
+			err.append(val)	
+		return
+
+
+# check_for_new_products()
+update_product_details()
 # main_cats = read_pickle_file('main_cats.pickle')
 # cats = read_pickle_file('cats.pickle')
 # sub_cats = read_pickle_file('sub_cats.pickle')
