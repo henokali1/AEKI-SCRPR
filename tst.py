@@ -322,7 +322,6 @@ def get_cats():
 		for i in sp:
 			if 'vn__nav__link' in i:
 				cats.append(extract_url(i, sis, eis))
-		print(f'{len(cats)} cats extracted')
 	print(f'{len(cats)} cats extracted')
 	return cats
 
@@ -346,10 +345,11 @@ def check_for_new_products():
 	sub_cats = get_sub_cats()
 	nw_cntr = 0
 	for idx,val in enumerate(sub_cats):
+		print('val: ',val)
+		cat_id = val.split('-')[-1].split('/')[0]
+		json_url = f'https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category={cat_id}&size=480'
+		print('json_url:\t',json_url)
 		try:
-			print('val: ',val)
-			cat_id = val.split('-')[-1].split('/')[0]
-			json_url = f'https://sik.search.blue.cdtapps.com/ae/en/product-list-page?category={cat_id}&size=480'
 			f = urllib.request.urlopen(json_url)
 			rep = str(f.read().decode("utf-8"))
 			d=json.loads(rep)
@@ -368,7 +368,8 @@ def check_for_new_products():
 				else:
 					print('Product Already exists: ',obj)
 		except:
-			print('Err', idx)
+			pass
+
 
 
 def update_product_details():
@@ -379,22 +380,25 @@ def update_product_details():
 		print(f'Remaining: {len(products)-i}',i)
 		url = val.url
 		print(url)
-		f = urllib.request.urlopen(url)
-		rep = str(f.read().decode("utf-8"))
+		try:
+			f = urllib.request.urlopen(url)
+			rep = str(f.read().decode("utf-8"))
 
-		# try:
-		# 	brand_sis = '<div class="range-revamp-header-section__title--big">'
-		# 	brand_eis = '</div>'
-		# 	brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
-		# 	val.update(brand=brand)
-		# 	print('brand:',brand)
-		# except:
-		# 	err.append(val)
-		brand_sis = '<div class="range-revamp-header-section__title--big">'
-		brand_eis = '</div>'
-		brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
-		Product.objects.filter(pk=val.pk).update(brand=brand)
-		print('brand:',brand)
+			# try:
+			# 	brand_sis = '<div class="range-revamp-header-section__title--big">'
+			# 	brand_eis = '</div>'
+			# 	brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
+			# 	val.update(brand=brand)
+			# 	print('brand:',brand)
+			# except:
+			# 	err.append(val)
+			brand_sis = '<div class="range-revamp-header-section__title--big">'
+			brand_eis = '</div>'
+			brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
+			Product.objects.filter(pk=val.pk).update(brand=brand)
+			print('brand:',brand)
+		except:
+			pass
 
 
 		try:
@@ -461,7 +465,6 @@ def update_product_details():
 			Product.objects.filter(pk=val.pk).update(delivery_availability=delivery_availability)
 		except:
 			err.append(val)	
-		return
 
 
 # check_for_new_products()
