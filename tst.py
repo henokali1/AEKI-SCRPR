@@ -467,9 +467,5 @@ def update_product_details():
 			err.append(val)	
 
 
-# check_for_new_products()
-update_product_details()
-# main_cats = read_pickle_file('main_cats.pickle')
-# cats = read_pickle_file('cats.pickle')
-# sub_cats = read_pickle_file('sub_cats.pickle')
-
+# update_product_details()
+# add_upc_code()
