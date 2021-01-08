@@ -370,8 +370,6 @@ def check_for_new_products():
 		except:
 			pass
 
-
-
 def update_product_details():
 	check_for_new_products()
 	err = []
@@ -384,14 +382,6 @@ def update_product_details():
 			f = urllib.request.urlopen(url)
 			rep = str(f.read().decode("utf-8"))
 
-			# try:
-			# 	brand_sis = '<div class="range-revamp-header-section__title--big">'
-			# 	brand_eis = '</div>'
-			# 	brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
-			# 	val.update(brand=brand)
-			# 	print('brand:',brand)
-			# except:
-			# 	err.append(val)
 			brand_sis = '<div class="range-revamp-header-section__title--big">'
 			brand_eis = '</div>'
 			brand = ext_str(val=rep,sis=brand_sis,eis=brand_eis)
@@ -399,7 +389,6 @@ def update_product_details():
 			print('brand:',brand)
 		except:
 			pass
-
 
 		try:
 			title_sis = '<span class="range-revamp-header-section__description-text">'
@@ -409,8 +398,6 @@ def update_product_details():
 			Product.objects.filter(pk=val.pk).update(title=title)
 		except:
 			err.append(val)
-		
-		
 
 		try:
 			price_sis = '<span class="range-revamp-price__integer">'
