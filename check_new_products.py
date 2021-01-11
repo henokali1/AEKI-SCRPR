@@ -125,7 +125,7 @@ def update_product_details():
 	products = Product.objects.all()
 	nw_prds = 0
 	for i,val in enumerate(products):
-		print(f'Remaining: {len(products)-i}',i)
+		# print(f'Remaining: {len(products)-i}',i)
 		url = val.url
 		# print(url)
 		try:
@@ -216,4 +216,4 @@ def calc_tm():
 
 update_product_details()
 calc_tm()
-print(f'------------ {datetime.datetime.now()} ------------')
+print(f'------------ {datetime.datetime.now()} ------------\n\n')

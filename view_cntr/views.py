@@ -75,7 +75,7 @@ def dashboard(request):
 
 		products = products.order_by(srt).exclude(delivery_availability = 'Not available for delivery')
 		page = request.GET.get('page', 1)
-		paginator = Paginator(products, 500)
+		paginator = Paginator(products, 50)
 		try:
 			products = paginator.page(page)
 		except PageNotAnInteger:
@@ -184,7 +184,7 @@ def test(request):
 
 		products = products.order_by(srt).exclude(delivery_availability = 'Not available for delivery')
 		page = request.GET.get('page', 1)
-		paginator = Paginator(products, 500)
+		paginator = Paginator(products, 50)
 		try:
 			products = paginator.page(page)
 		except PageNotAnInteger:
