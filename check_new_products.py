@@ -55,7 +55,7 @@ def get_man_cats():
 		if '001/' in i:
 			cat_url = extract_url(i, sis, eis)
 			main_cat_url.append(cat_url)
-	print(f'{len(main_cat_url)} main_cat_url extracted')
+	# print(f'{len(main_cat_url)} main_cat_url extracted')
 	return main_cat_url
 
 def get_cats():
@@ -70,7 +70,7 @@ def get_cats():
 		for i in sp:
 			if 'vn__nav__link' in i:
 				cats.append(extract_url(i, sis, eis))
-	print(f'{len(cats)} cats extracted')
+	# print(f'{len(cats)} cats extracted')
 	return cats
 
 def get_sub_cats():
@@ -85,7 +85,7 @@ def get_sub_cats():
 		for i in sp:
 			if 'vn__nav__link' in i:
 				sub_cats.append(extract_url(i, sis, eis))
-	print(f'{len(sub_cats)} sub_cats extracted')
+	# print(f'{len(sub_cats)} sub_cats extracted')
 	return sub_cats
 
 def check_for_new_products():
